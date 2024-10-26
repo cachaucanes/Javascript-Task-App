@@ -1,6 +1,7 @@
 document.getElementById('formTasks').addEventListener('submit', saveTasks);
 
 function saveTasks(e) {
+  e.preventDefault()
 
   let title = document.getElementById('title').value
   let description = document.getElementById('description').value
@@ -18,14 +19,12 @@ function saveTasks(e) {
   else {
     let tasks = JSON.parse(localStorage.getItem('tasks'))
     tasks.push(task)
-    localStorage.setItem('tasks', JSON.stringify(tasks))
-    console.log(JSON.parse(localStorage.getItem('tasks')))
+    localStorage.setItem('tasks', JSON.stringify(tasks))    
   }
-
-  getTasks()
+  showMessage('Task Added Successfully', 'success')
   document.getElementById('formTasks').reset()
-  title.focus()
-  e.preventDefault()
+  document.getElementById('title').focus()
+  getTasks()
 
 }
 
@@ -54,7 +53,22 @@ function deleteTasks(title) {
     }
   }
   localStorage.setItem('tasks', JSON.stringify(tasks))
+  showMessage('Product delete successfully', 'danger')
   getTasks()
+}
+
+function showMessage(message, color) {
+  const div = document.createElement('div')
+  div.className = `alert alert-${color} mt-2`;
+  div.appendChild(document.createTextNode(message))
+  //Mostrando en el dom
+  const container = document.querySelector('#container-main')
+  const app = document.querySelector('#app')
+  container.insertBefore(div, app)
+  //Tiempo del mensaje
+  setTimeout(function () {
+    document.querySelector('.alert').remove()
+  }, 3000)
 }
 
 getTasks()
